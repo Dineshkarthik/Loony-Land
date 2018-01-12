@@ -44,6 +44,7 @@ class MessageBot(Client):
 
         # If you skip auhtor_id check,
         # Then the bot will propose whoever messaes you :P
+        # Getting thi author_id is explained in the README
         if author_id == 'id_of_the_one_you_are_proposing':
             MessageBot.counter += 1
             if message.lower() == 'start' or message.lower(
@@ -96,5 +97,5 @@ class MessageBot(Client):
             MessageBot.msg_ids[MessageBot.counter] = msg_id
 
 
-client = MessageBot("your_fb_username", "your_fb_password")
+client = MessageBot('<email>', '<password>')
 client.listen()
