@@ -69,6 +69,7 @@ target/
 
 # Jupyter Notebook
 .ipynb_checkpoints
+*.ipynb
 
 # pyenv
 .python-version
@@ -86,6 +87,11 @@ celerybeat-schedule
 .venv
 venv/
 ENV/
+pip-selfcheck.json
+bin/
+include/
+lib/
+pyvenv.cfg
 
 # Spyder project settings
 .spyderproject
