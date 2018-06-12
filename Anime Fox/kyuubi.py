@@ -14,7 +14,7 @@ from sqlalchemy.orm import sessionmaker, Session
 from sqlalchemy.ext.declarative import declarative_base
 
 from email.message import EmailMessage
-from flask import Flask
+from flask import Flask, json, render_template
 
 app = Flask(__name__)
 app.secret_key = hashlib.sha1(os.urandom(128)).hexdigest()
@@ -77,6 +77,18 @@ def crawler():
 
     session.commit()
     return "Anime watch updated successfully...!"
+
+
+@app.route("/", methods=['GET'])
+def index():
+    """Root funciton."""
+    _list = []
+    for anime in session.query(Anime).all():
+        _dict = anime.__dict__
+        _dict.pop('_sa_instance_state')
+        _dict['url'] = f'{anime.base_url}/{anime.anime_url}-episode-{anime.episode}'
+        _list.append(_dict)
+    return render_template('index.html', data=json.dumps(_list))
 
 if __name__ == "__main__":
     parser = OptionParser()
