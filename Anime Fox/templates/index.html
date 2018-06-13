@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>Anime Watch</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="title" content="Anime Watch">
+    <meta name="author" content="Dineshkarthik">
+    <meta name="description" content="Single place to follow latest episodes of animes.">
+    <meta property="og:site_name" content="Anime Watch">
+    <meta property="og:title" content="Anime Watch" />
+    <meta property="og:description" content="Single place to follow latest episodes of animes." />
+    <meta property="og:image" itemprop="image" content="https://anime-watch.herokuapp.com/static/images/favicon-16x16.png">
+    <meta property="og:image:width" content="300">
+    <meta property="og:image:height" content="200">
+    <meta property="og:type" content="website" />
+    <meta property="og:updated_time" content="1440432930" />
+	<link rel="shortcut icon" href="./static/images/favicon.ico">
+	<link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/3.5.2/select2.min.css">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery.perfect-scrollbar/1.1.0/css/perfect-scrollbar.min.css">
+    <link rel="stylesheet" type="text/css" href="./static/css/main.css">
+
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.9.1/underscore-min.js"></script>
+	<script type="text/javascript">
+      var animeList= {{ data|safe }};
+    </script>
+</head>
+<body>
+	<div class="limiter">
+		<div class="container-table100">
+			<div class="wrap-table100">
+				<div class="table" id="template-container">
+					<script type="text/html" id="plot-template">
+					<div class="row header">
+						<div class="cell">
+							Anime
+						</div>
+						<div class="cell">
+							Episode
+						</div>
+						<div class="cell">
+							URL
+						</div>
+						<div class="cell">
+							Last Updated
+						</div>
+					</div>
+					<% _.each(animeList, function(anime) { %>
+						<div class="row">
+							<div class="cell" data-title="Anime">
+								<%= anime.name %>
+							</div>
+							<div class="cell" data-title="Episode">
+								<%= anime.episode %>
+							</div>
+							<div class="cell" data-title="URL">
+								<a href="<%= anime.url %>" target="_blank">Click here</a> 
+							</div>
+							<div class="cell" data-title="Last Updated">
+								<%= anime.updated_at %>
+							</div>
+						</div>
+					<% }); %>
+					</script>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.5/umd/popper.js"></script>
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/3.5.2/select2.min.js"></script>
+	<script type="text/javascript">
+		(function ($) {"use strict";})(jQuery);
+		var template = $("#plot-template").html();
+		$("#template-container").html(_.template(template, {
+            animeList: animeList
+          }));
+	</script>
+</body>
+</html>
