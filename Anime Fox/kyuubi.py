@@ -39,6 +39,17 @@ class Anime(Base):
 
     __table__ = Base.metadata.tables[config['table_name']]
 
+def get_active_anime():
+    """Function to get list of all active anime."""
+    _list = []
+    for anime in session.query(Anime).all():
+        _dict = anime.__dict__
+        if _dict["active"]:
+            _dict.pop('_sa_instance_state')
+            _dict['url'] = f'{anime.base_url}/{anime.anime_url}-episode-{anime.episode}'
+            _list.append(_dict)
+    return _list
+
 
 @app.route("/crawler", methods=['GET'])
 def crawler():
@@ -51,10 +62,11 @@ def crawler():
             if r.status_code == 200:
                 data = r.text
                 soup = BeautifulSoup(data)
-                anime.last_refreshed_at = datetime.now().isoformat()
+                datetime_ = datetime.utcnow().strftime("%Y-%m-%d %H:%M UTC")
+                anime.last_refreshed_at = datetime_
                 if soup.find_all('div', {'class': 'anime_video_body_watch'}):
                     anime.episode = anime.episode + 1
-                    anime.updated_at = datetime.now().isoformat()
+                    anime.updated_at = datetime_
                     updated[anime.name] = _url
 
     message = ''
@@ -76,18 +88,14 @@ def crawler():
         server.sendmail(config['fromaddr'], config['toaddr'], text)
 
     session.commit()
-    return "Anime watch updated successfully...!"
+    _list = get_active_anime()
+    return json.dumps(_list)
 
 
 @app.route("/", methods=['GET'])
 def index():
     """Root funciton."""
-    _list = []
-    for anime in session.query(Anime).all():
-        _dict = anime.__dict__
-        _dict.pop('_sa_instance_state')
-        _dict['url'] = f'{anime.base_url}/{anime.anime_url}-episode-{anime.episode}'
-        _list.append(_dict)
+    _list = get_all_anime()
     return render_template('index.html', data=json.dumps(_list))
 
 if __name__ == "__main__":
