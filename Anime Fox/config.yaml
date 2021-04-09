@@ -1,9 +1,0 @@
-db_name: 'DB_NAME'
-db_username: 'DB_USERNAME'
-db_password: 'DB_PASSWORD'
-db_host: 'DB_HOST'
-db_port: 5432
-table_name: 'TABLE_NAME'
-fromaddr: 'YOUR_GMAIL_ADDRESS'
-toaddr: 'TO_EMAIL_ADDRESS'
-password: 'GMAIL_APP_PASSWORD'
